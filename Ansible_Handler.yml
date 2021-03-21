@@ -1,0 +1,25 @@
+- hosts: localhost
+  vars:
+    port_no: 8085
+  tasks:
+  - package:
+     name: "httpd"
+     state: present
+  - file:
+     path: /var/www/tushar
+     state: directory
+  - copy:
+     src: hello.html
+     dest: /var/www/tushar/index.html
+    notify: webservices
+  - template:
+     src: new.conf
+     dest: /etc/httpd/conf.d/new.conf
+    notify: webservices
+  handlers:
+  - name: webservices
+    service:
+     name: httpd
+     state: restarted
+   
+
